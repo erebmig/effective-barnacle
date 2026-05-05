@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TubeGrab Pro - YouTube MP3 & MP4 Indirici</title>
+    <meta name="description" content="YouTube videolarini hizli ve kolay bir sekilde MP3 veya MP4 formatinda indirin. Email ile dogrulama yaparak hizli indirme.">
+    <meta name="keywords" content="youtube indir, mp3 indir, mp4 indir, youtube converter, video indirme">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="TubeGrab Pro - YouTube Indirici">
+    <meta property="og:description" content="YouTube videolarini yuksek kalitede indirin">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #030303;
+            --bg-secondary: #080808;
+            --bg-card: #0c0c0c;
+            --bg-card-hover: #121212;
+            --bg-input: #090909;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --text-muted: #555555;
+            --accent: #ff2d2d;
+            --accent-hover: #ff1a1a;
+            --accent-glow: rgba(255, 45, 45, 0.25);
+            --accent-secondary: #ff6633;
+            --success: #00d26a;
+            --success-glow: rgba(0, 210, 106, 0.2);
+            --warning: #ffb800;
+            --border: #1a1a1a;
+            --border-hover: #252525;
+            --gradient-1: linear-gradient(135deg, #ff2d2d 0%, #ff6633 100%);
+            --gradient-2: linear-gradient(135deg, #ff6633 0%, #ffb800 100%);
+            --gradient-premium: linear-gradient(135deg, #00d26a 0%, #00b85c 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.02;
+            background-image: 
+                radial-gradient(circle at 25% 25%, var(--accent) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, var(--accent) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            background: rgba(3, 3, 3, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .logo-text span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            background: var(--gradient-1);
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            margin-right: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* User Section */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 210, 106, 0.1);
+            border: 1px solid rgba(0, 210, 106, 0.2);
+            border-radius: 10px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-premium);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar svg {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        .user-email {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--success);
+        }
+
+        .premium-badge-small {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            background: var(--gradient-premium);
+            border-radius: 4px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .logout-btn {
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Email Login Button */
+        .email-login-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .email-login-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+        }
+
+        .email-login-btn svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+        }
+
+        /* Premium Banner */
+        .premium-banner {
+            background: linear-gradient(90deg, rgba(255, 45, 45, 0.08) 0%, rgba(255, 102, 51, 0.08) 100%);
+            border: 1px solid rgba(255, 45, 45, 0.15);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            margin: 2rem auto;
+            max-width: 750px;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 45, 45, 0.08); }
+            50% { box-shadow: 0 0 50px rgba(255, 45, 45, 0.15); }
+        }
+
+        .premium-banner.hidden {
+            display: none;
+        }
+
+        .premium-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .premium-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .premium-text {
+            flex: 1;
+        }
+
+        .premium-text h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .premium-text h4 .lightning {
+            color: var(--warning);
+        }
+
+        .premium-text p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .premium-btn {
+            padding: 0.7rem 1.4rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .premium-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--accent-glow);
+        }
+
+        .premium-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .premium-close:hover {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3.5rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 45, 45, 0.08);
+            border: 1px solid rgba(255, 45, 45, 0.15);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 550px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* Download Section */
+        .download-section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .input-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .input-card:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 60px var(--accent-glow);
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 1.15rem 1.25rem;
+            padding-left: 3.25rem;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .url-input::placeholder {
+            color: var(--text-muted);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1.1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+
+        .paste-btn {
+            position: absolute;
+            right: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.45rem 0.9rem;
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .paste-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .paste-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        /* Format & Quality */
+        .options-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .format-buttons {
+            display: flex;
+            gap: 0.6rem;
+            flex: 1;
+        }
+
+        .format-btn {
+            flex: 1;
+            padding: 0.9rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .format-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .format-btn.active {
+            border-color: var(--accent);
+            background: rgba(255, 45, 45, 0.1);
+            color: var(--text-primary);
+        }
+
+        .format-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .quality-select {
+            padding: 0.9rem 1rem;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            min-width: 130px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+        }
+
+        .quality-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 1.1rem 2rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 35px var(--accent-glow);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .download-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* Video Preview */
+        .video-preview {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1.25rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .video-preview.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .preview-content {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+
+        .preview-thumb-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .preview-thumb {
+            width: 160px;
+            height: 90px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--bg-card);
+        }
+
+        .preview-duration {
+            position: absolute;
+            bottom: 0.4rem;
+            right: 0.4rem;
+            padding: 0.15rem 0.4rem;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .preview-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .preview-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .preview-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .preview-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .preview-meta svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        /* Progress */
+        .progress-container {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1.25rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .progress-container.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .progress-status {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .progress-percent {
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 100px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Success State */
+        .success-container {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1.5rem;
+            background: rgba(0, 210, 106, 0.08);
+            border: 1px solid rgba(0, 210, 106, 0.2);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .success-container.show {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        .success-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-premium);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .success-icon svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .success-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--success);
+        }
+
+        .success-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .download-file-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            background: var(--gradient-premium);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .download-file-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--success-glow);
+        }
+
+        .download-file-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Error State */
+        .error-container {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1.25rem;
+            background: rgba(255, 45, 45, 0.08);
+            border: 1px solid rgba(255, 45, 45, 0.2);
+            border-radius: 12px;
+        }
+
+        .error-container.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        .error-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .error-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 45, 45, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .error-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        .error-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .error-text p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .error-action {
+            margin-top: 0.75rem;
+        }
+
+        .error-action button {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .error-action button:hover {
+            border-color: var(--accent);
+        }
+
+        /* Email Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .modal-close svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .modal-icon svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-form {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .code-input {
+            text-align: center;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--accent-glow);
+        }
+
+        .form-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-btn.loading {
+            pointer-events: none;
+        }
+
+        .form-btn .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .form-message {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .form-message.error {
+            background: rgba(255, 45, 45, 0.1);
+            border: 1px solid rgba(255, 45, 45, 0.2);
+            color: var(--accent);
+        }
+
+        .form-message.success {
+            background: rgba(0, 210, 106, 0.1);
+            border: 1px solid rgba(0, 210, 106, 0.2);
+            color: var(--success);
+        }
+
+        .resend-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .resend-link button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .resend-link button:hover:not(:disabled) {
+            color: var(--text-secondary);
+        }
+
+        .resend-link button:disabled {
+            cursor: not-allowed;
+        }
+
+        .modal-benefits {
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .modal-benefits h5 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .benefit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .benefit-item svg {
+            width: 16px;
+            height: 16px;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+
+        /* Features */
+        .features-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 45, 45, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon svg {
+            width: 22px;
+            height: 22px;
+            color: var(--accent);
+        }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .footer-logo span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-copyright svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .premium-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.25rem;
+            }
+
+            .stats-row {
+                gap: 1.5rem;
+            }
+
+            .options-row {
+                flex-direction: column;
+            }
+
+            .quality-select {
+                width: 100%;
+            }
+
+            .preview-content {
+                flex-direction: column;
+            }
+
+            .preview-thumb {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9;
+            }
+
+            .user-info {
+                padding: 0.4rem 0.8rem;
+            }
+
+            .user-email {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-glow"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">Tube<span>Grab</span></div>
+                    <span class="logo-badge">Pro</span>
+                </div>
+                
+                <div class="header-right">
+                    <nav class="nav-links">
+                        <a href="#features">Ozellikler</a>
+                        <a href="#faq">SSS</a>
+                    </nav>
+                    
+                    <div class="user-section">
+                        {% if user_email %}
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <span class="user-email">{{ user_email }}</span>
+                            <span class="premium-badge-small">Premium</span>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">Cikis</button>
+                        {% else %}
+                        <button class="email-login-btn" onclick="openEmailModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            Email ile Giris
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Premium Banner -->
+        {% if not user_email %}
+        <div class="premium-banner" id="premiumBanner">
+            <div class="premium-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+            </div>
+            <div class="premium-text">
+                <h4><span class="lightning">&#x26A1;</span> Hizli Indirme Istiyorsan Email ile Giris Yap!</h4>
+                <p>Bot korumasini atla, 20x hizli indir, 320kbps MP3 ve 4K video kalitesi</p>
+            </div>
+            <button class="premium-btn" onclick="openEmailModal()">Hemen Giris Yap</button>
+            <button class="premium-close" onclick="closePremiumBanner()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        {% endif %}
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                Turkiye'nin En Hizli YouTube Indicisi
+            </div>
+            <h1>YouTube'dan<br><span class="gradient-text">MP3 & MP4</span> Indir</h1>
+            <p>Yuksek kaliteli muzik ve videolari saniyeler icinde indir. Hic bir reklam, hic bir bekleme.</p>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalDownloads">{{ stats.total_downloads if stats else 0 }}+</div>
+                    <div class="stat-label">Toplam Indirme</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4K</div>
+                    <div class="stat-label">Video Kalitesi</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">320kbps</div>
+                    <div class="stat-label">Ses Kalitesi</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section class="download-section">
+            <div class="input-card">
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                    </svg>
+                    <input type="text" class="url-input" id="urlInput" placeholder="YouTube linkini buraya yapistir...">
+                    <button class="paste-btn" onclick="pasteFromClipboard()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Yapistir
+                    </button>
+                </div>
+                
+                <div class="options-row">
+                    <div class="format-buttons">
+                        <button class="format-btn active" id="mp4Btn" onclick="selectFormat('mp4')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+                                <line x1="7" y1="2" x2="7" y2="22"/>
+                                <line x1="17" y1="2" x2="17" y2="22"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <line x1="2" y1="7" x2="7" y2="7"/>
+                                <line x1="2" y1="17" x2="7" y2="17"/>
+                                <line x1="17" y1="17" x2="22" y2="17"/>
+                                <line x1="17" y1="7" x2="22" y2="7"/>
+                            </svg>
+                            MP4
+                        </button>
+                        <button class="format-btn" id="mp3Btn" onclick="selectFormat('mp3')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18V5l12-2v13"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <circle cx="18" cy="16" r="3"/>
+                            </svg>
+                            MP3
+                        </button>
+                    </div>
+                    <select class="quality-select" id="qualitySelect">
+                        <option value="best">En Iyi Kalite</option>
+                        <option value="1080p">1080p HD</option>
+                        <option value="720p">720p HD</option>
+                        <option value="480p">480p</option>
+                        <option value="360p">360p</option>
+                    </select>
+                </div>
+                
+                <button class="download-btn" id="downloadBtn" onclick="startDownload()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Indir
+                </button>
+                
+                <!-- Video Preview -->
+                <div class="video-preview" id="videoPreview">
+                    <div class="preview-content">
+                        <div class="preview-thumb-wrapper">
+                            <img class="preview-thumb" id="previewThumb" src="" alt="Video Thumbnail">
+                            <span class="preview-duration" id="previewDuration">0:00</span>
+                        </div>
+                        <div class="preview-info">
+                            <h4 class="preview-title" id="previewTitle">Video Basligi</h4>
+                            <div class="preview-meta">
+                                <span id="previewChannel">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                    Kanal Adi
+                                </span>
+                                <span id="previewViews">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    0 izlenme
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-header">
+                        <span class="progress-status" id="progressStatus">Hazirlaniyor...</span>
+                        <span class="progress-percent" id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span id="progressSpeed">-- MB/s</span>
+                        <span id="progressEta">--</span>
+                    </div>
+                </div>
+                
+                <!-- Success -->
+                <div class="success-container" id="successContainer">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h3 class="success-title">Indirme Tamamlandi!</h3>
+                    <p class="success-subtitle" id="successSubtitle">Dosyaniz hazir</p>
+                    <button class="download-file-btn" id="downloadFileBtn" onclick="downloadFile()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Dosyayi Indir
+                    </button>
+                </div>
+                
+                <!-- Error -->
+                <div class="error-container" id="errorContainer">
+                    <div class="error-content">
+                        <div class="error-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </div>
+                        <div class="error-text">
+                            <h4>Bir Hata Olustu</h4>
+                            <p id="errorMessage">Bilinmeyen hata</p>
+                            <div class="error-action" id="errorAction"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section" id="features">
+            <h2 class="features-title">Neden TubeGrab Pro?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3>Yildirim Hizinda</h3>
+                    <p>Gelistirilmis sunucularimiz sayesinde videolarinizi saniyeler icinde indirin.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>Guvenli & Gizli</h3>
+                    <p>Hic bir veri kaydetmiyoruz. Indirmeleriniz tamamen anonim ve guvenli.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <h3>7/24 Erisim</h3>
+                    <p>Gunun her saati, haftanin her gunu kesintisiz hizmet.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Coklu Format</h3>
+                    <p>MP3, MP4 ve daha fazla formatta yuksek kalitede indirme secenekleri.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Premium Avantajlar</h3>
+                    <p>Email ile giris yaparak bot korumasini atla ve 20x hizli indir.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <h3>Kolay Dogrulama</h3>
+                    <p>Email adresinize gelen 6 haneli kod ile aninda premium erisim.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">Tube<span>Grab</span> Pro</div>
+                <p class="footer-text">
+                    <strong>Yasal Uyari:</strong> Indirilen icerikler kisisel kullanim icindir. 
+                    Telif hakki, yukleyiciye ve icerik sahibine aittir. 
+                    Ticari amacli kullanim ve dagitim yasaktir.
+                </p>
+                <div class="footer-copyright">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M14.83 14.83a4 4 0 1 1 0-5.66"/>
+                    </svg>
+                    2024 TubeGrab Pro - Tum haklar saklidir
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Email Modal -->
+    <div class="modal-overlay" id="emailModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeEmailModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            
+            <!-- Step 1: Email Input -->
+            <div id="emailStep1">
+                <div class="modal-header">
+                    <div class="modal-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <h3 class="modal-title">Hizli Indirme Icin Giris Yap</h3>
+                    <p class="modal-subtitle">Email adresine 6 haneli kod gonderecegiz</p>
+                </div>
+                
+                <div class="modal-form">
+                    <div class="form-group">
+                        <label class="form-label">Email Adresi</label>
+                        <input type="email" class="form-input" id="emailInput" placeholder="ornek@email.com">
+                    </div>
+                    <button class="form-btn" id="sendCodeBtn" onclick="sendVerificationCode()">
+                        <span>Kod Gonder</span>
+                    </button>
+                    <div class="form-message" id="emailMessage" style="display: none;"></div>
+                </div>
+                
+                <div class="modal-benefits">
+                    <h5>Premium Avantajlar</h5>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            20x Daha Hizli Indirme
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            YouTube Bot Korumasini Atlama
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            320kbps MP3 & 4K Video
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Sinirsiz Indirme Hakki
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Code Verification -->
+            <div id="emailStep2" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3 class="modal-title">Dogrulama Kodu</h3>
+                    <p class="modal-subtitle" id="codeSentTo">kodunuz@email.com adresine gonderildi</p>
+                </div>
+                
+                <div class="modal-form">
+                    <div class="form-group">
+                        <label class="form-label">6 Haneli Kod</label>
+                        <input type="text" class="form-input code-input" id="codeInput" placeholder="000000" maxlength="6">
+                    </div>
+                    <button class="form-btn" id="verifyCodeBtn" onclick="verifyCode()">
+                        <span>Dogrula</span>
+                    </button>
+                    <div class="form-message" id="codeMessage" style="display: none;"></div>
+                </div>
+                
+                <div class="resend-link">
+                    <button id="resendBtn" onclick="resendCode()">Kodu tekrar gonder</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Success -->
+            <div id="emailStep3" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-icon" style="background: var(--gradient-premium);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h3 class="modal-title" style="color: var(--success);">Hosgeldiniz!</h3>
+                    <p class="modal-subtitle">Premium hesabiniz aktif edildi</p>
+                </div>
+                
+                <div class="modal-benefits">
+                    <h5>Artik su avantajlara sahipsiniz:</h5>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            20x Daha Hizli Indirme
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            YouTube Bot Korumasini Atlama
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            320kbps MP3 & 4K Video
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Sinirsiz Indirme Hakki
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="form-btn" style="margin-top: 1.5rem; background: var(--gradient-premium);" onclick="closeEmailModal(); location.reload();">
+                    Indirmeye Basla
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentFormat = 'mp4';
+        let currentDownloadId = null;
+        let currentEmail = '';
+        let statusCheckInterval = null;
+        let resendCountdown = 0;
+
+        // Format Selection
+        function selectFormat(format) {
+            currentFormat = format;
+            document.getElementById('mp4Btn').classList.toggle('active', format === 'mp4');
+            document.getElementById('mp3Btn').classList.toggle('active', format === 'mp3');
+            
+            const qualitySelect = document.getElementById('qualitySelect');
+            if (format === 'mp3') {
+                qualitySelect.innerHTML = `
+                    <option value="best">320kbps (En Iyi)</option>
+                    <option value="192">192kbps</option>
+                    <option value="128">128kbps</option>
+                `;
+            } else {
+                qualitySelect.innerHTML = `
+                    <option value="best">En Iyi Kalite</option>
+                    <option value="2160p">4K (2160p)</option>
+                    <option value="1080p">1080p HD</option>
+                    <option value="720p">720p HD</option>
+                    <option value="480p">480p</option>
+                    <option value="360p">360p</option>
+                `;
+            }
+        }
+
+        // Paste from Clipboard
+        async function pasteFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('urlInput').value = text;
+                // Auto fetch info
+                if (text.includes('youtube.com') || text.includes('youtu.be')) {
+                    fetchVideoInfo();
+                }
+            } catch (err) {
+                console.error('Clipboard access denied');
+            }
+        }
+
+        // Fetch Video Info
+        async function fetchVideoInfo() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return;
+
+            const preview = document.getElementById('videoPreview');
+            preview.classList.remove('show');
+
+            try {
+                const response = await fetch('/api/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('previewThumb').src = data.thumbnail;
+                    document.getElementById('previewTitle').textContent = data.title;
+                    document.getElementById('previewDuration').textContent = data.duration_string;
+                    document.getElementById('previewChannel').innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        ${data.channel}
+                    `;
+                    document.getElementById('previewViews').innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        ${data.view_count_string} izlenme
+                    `;
+                    preview.classList.add('show');
+                }
+            } catch (err) {
+                console.error('Failed to fetch video info:', err);
+            }
+        }
+
+        // URL Input Listener
+        document.getElementById('urlInput').addEventListener('input', debounce(fetchVideoInfo, 500));
+        document.getElementById('urlInput').addEventListener('paste', () => setTimeout(fetchVideoInfo, 100));
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => { clearTimeout(timeout); func(...args); };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Start Download
+        async function startDownload() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                showError('Lutfen bir YouTube linki girin');
+                return;
+            }
+
+            const btn = document.getElementById('downloadBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner" style="width:22px;height:22px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;"></div> Hazirlaniyor...';
+
+            hideAllStates();
+
+            try {
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        url,
+                        format: currentFormat,
+                        quality: document.getElementById('qualitySelect').value
+                    })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    currentDownloadId = data.download_id;
+                    showProgress();
+                    startStatusCheck();
+                } else {
+                    showError(data.error, data.suggestion);
+                    resetDownloadBtn();
+                }
+            } catch (err) {
+                showError('Baglanti hatasi. Lutfen tekrar deneyin.');
+                resetDownloadBtn();
+            }
+        }
+
+        // Status Check
+        function startStatusCheck() {
+            if (statusCheckInterval) clearInterval(statusCheckInterval);
+            
+            statusCheckInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/status/${currentDownloadId}`);
+                    const data = await response.json();
+
+                    if (data.status === 'downloading') {
+                        updateProgress(data.progress, data.status, data.speed, data.eta);
+                    } else if (data.status === 'processing') {
+                        updateProgress(95, 'Isleniyor...', '', '');
+                    } else if (data.status === 'completed') {
+                        clearInterval(statusCheckInterval);
+                        showSuccess(data.filename, data.filesize);
+                    } else if (data.status === 'error') {
+                        clearInterval(statusCheckInterval);
+                        showError(data.error, data.suggestion);
+                        resetDownloadBtn();
+                    }
+                } catch (err) {
+                    console.error('Status check failed:', err);
+                }
+            }, 500);
+        }
+
+        // Progress Update
+        function updateProgress(percent, status, speed, eta) {
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressStatus').textContent = status === 'downloading' ? 'Indiriliyor...' : status;
+            document.getElementById('progressSpeed').textContent = speed || '-- MB/s';
+            document.getElementById('progressEta').textContent = eta || '--';
+        }
+
+        // Show/Hide States
+        function showProgress() {
+            document.getElementById('progressContainer').classList.add('show');
+            document.getElementById('successContainer').classList.remove('show');
+            document.getElementById('errorContainer').classList.remove('show');
+        }
+
+        function showSuccess(filename, filesize) {
+            document.getElementById('progressContainer').classList.remove('show');
+            document.getElementById('successContainer').classList.add('show');
+            document.getElementById('successSubtitle').textContent = filename;
+            resetDownloadBtn();
+        }
+
+        function showError(message, suggestion) {
+            document.getElementById('progressContainer').classList.remove('show');
+            document.getElementById('errorContainer').classList.add('show');
+            document.getElementById('errorMessage').textContent = message;
+            
+            const actionDiv = document.getElementById('errorAction');
+            if (suggestion === 'email_verify') {
+                actionDiv.innerHTML = '<button onclick="openEmailModal()">Email ile Giris Yap</button>';
+            } else {
+                actionDiv.innerHTML = '';
+            }
+        }
+
+        function hideAllStates() {
+            document.getElementById('progressContainer').classList.remove('show');
+            document.getElementById('successContainer').classList.remove('show');
+            document.getElementById('errorContainer').classList.remove('show');
+        }
+
+        function resetDownloadBtn() {
+            const btn = document.getElementById('downloadBtn');
+            btn.disabled = false;
+            btn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Indir
+            `;
+        }
+
+        // Download File
+        function downloadFile() {
+            if (currentDownloadId) {
+                window.location.href = `/api/file/${currentDownloadId}`;
+                // Cleanup after download
+                setTimeout(() => {
+                    fetch(`/api/cleanup/${currentDownloadId}`, { method: 'POST' });
+                }, 5000);
+            }
+        }
+
+        // Email Modal Functions
+        function openEmailModal() {
+            document.getElementById('emailModal').classList.add('show');
+            document.getElementById('emailStep1').style.display = 'block';
+            document.getElementById('emailStep2').style.display = 'none';
+            document.getElementById('emailStep3').style.display = 'none';
+            document.getElementById('emailInput').focus();
+        }
+
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.remove('show');
+        }
+
+        // Send Verification Code
+        async function sendVerificationCode() {
+            const email = document.getElementById('emailInput').value.trim();
+            if (!email) {
+                showEmailMessage('error', 'Email adresi girin');
+                return;
+            }
+
+            const btn = document.getElementById('sendCodeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div>';
+
+            try {
+                const response = await fetch('/api/auth/send-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    currentEmail = email;
+                    document.getElementById('emailStep1').style.display = 'none';
+                    document.getElementById('emailStep2').style.display = 'block';
+                    document.getElementById('codeSentTo').textContent = `${email} adresine gonderildi`;
+                    document.getElementById('codeInput').focus();
+                    startResendCountdown();
+                } else {
+                    showEmailMessage('error', data.error);
+                }
+            } catch (err) {
+                showEmailMessage('error', 'Baglanti hatasi');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<span>Kod Gonder</span>';
+        }
+
+        // Verify Code
+        async function verifyCode() {
+            const code = document.getElementById('codeInput').value.trim();
+            if (!code || code.length !== 6) {
+                showCodeMessage('error', '6 haneli kodu girin');
+                return;
+            }
+
+            const btn = document.getElementById('verifyCodeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div>';
+
+            try {
+                const response = await fetch('/api/auth/verify-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmail, code })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('emailStep2').style.display = 'none';
+                    document.getElementById('emailStep3').style.display = 'block';
+                } else {
+                    showCodeMessage('error', data.error);
+                }
+            } catch (err) {
+                showCodeMessage('error', 'Baglanti hatasi');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<span>Dogrula</span>';
+        }
+
+        // Resend Code
+        async function resendCode() {
+            if (resendCountdown > 0) return;
+            
+            const btn = document.getElementById('resendBtn');
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/send-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmail })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    showCodeMessage('success', 'Kod tekrar gonderildi');
+                    startResendCountdown();
+                } else {
+                    showCodeMessage('error', data.error);
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                showCodeMessage('error', 'Baglanti hatasi');
+                btn.disabled = false;
+            }
+        }
+
+        function startResendCountdown() {
+            resendCountdown = 60;
+            const btn = document.getElementById('resendBtn');
+            
+            const interval = setInterval(() => {
+                resendCountdown--;
+                btn.textContent = `Tekrar gonder (${resendCountdown}s)`;
+                btn.disabled = true;
+                
+                if (resendCountdown <= 0) {
+                    clearInterval(interval);
+                    btn.textContent = 'Kodu tekrar gonder';
+                    btn.disabled = false;
+                }
+            }, 1000);
+        }
+
+        // Message Helpers
+        function showEmailMessage(type, message) {
+            const msg = document.getElementById('emailMessage');
+            msg.style.display = 'block';
+            msg.className = 'form-message ' + type;
+            msg.textContent = message;
+        }
+
+        function showCodeMessage(type, message) {
+            const msg = document.getElementById('codeMessage');
+            msg.style.display = 'block';
+            msg.className = 'form-message ' + type;
+            msg.textContent = message;
+        }
+
+        // Logout
+        async function logout() {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            location.reload();
+        }
+
+        // Close Premium Banner
+        function closePremiumBanner() {
+            document.getElementById('premiumBanner').style.display = 'none';
+        }
+
+        // Auto-format code input
+        document.getElementById('codeInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+            if (this.value.length === 6) {
+                verifyCode();
+            }
+        });
+
+        // Close modal on overlay click
+        document.getElementById('emailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEmailModal();
+        });
+
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeEmailModal();
+        });
+    </script>
+</body>
+</html>
